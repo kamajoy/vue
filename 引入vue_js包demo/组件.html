@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例 </title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+<h3>1.全局自定义组件1：</h3>
+<div id="app">
+    <my-component-name></my-component-name>
+</div>
+<hr>
+
+<h3>2.全局自定义组件2：</h3>
+<div id="app2">
+    <my-component-name2></my-component-name2>
+    <my-component-name2></my-component-name2>
+    <my-component-name2></my-component-name2>
+</div>
+<hr>
+
+<h3>3.自定义局部组件和组件复用：</h3>
+<div id="app3">
+    <show_a></show_a>
+    <show_a></show_a>
+</div>
+<hr>
+
+<h3>4.组件prop简单使用：</h3>
+<div id="app4">
+    <site-name title="Google"></site-name>
+    <site-name title="Baidu"></site-name>
+    <site-name title="Taobao"></site-name>
+</div>
+<hr>
+
+<h3>5.组件动态数据Prop使用：</h3>
+<div id="app5">
+    <site-info v-for="site in sitesList" :id="site.id" :title="site.title" :url="site.url"></site-info>
+</div>
+<hr>
+
+<h3>6.组件动态Prop验证使用：</h3>
+<div id="app6">
+    <site-info v-for="site in sitesList" :id="site.id" :title="site.title" :url="site.url"></site-info>
+</div>
+<hr>
+
+
+<script>
+    // 创建一个Vue 应用
+    const app = Vue.createApp()
+    // 定义一个名为 my-component-name 的新全局组件
+    app.component('my-component-name', {
+        template: '<h1>自定义组件!</h1>'
+    })
+    app.mount('#app')
+
+    // 创建一个Vue 全局组件
+    const app2 = Vue.createApp()
+    // 定义一个名为 my-component-name2 的新全局组件
+    app2.component(
+        'my-component-name2', {
+            data() {
+                return {
+                    count: 0
+                }
+            },
+            template: `
+              <button @click="count++">
+              点了 {{ count }} 次！
+              </button>`
+        }
+    )
+    app2.mount('#app2')
+
+    // 创建一个Vue 局部自定义组件
+    var show_A = {
+        template: '<h3>自定义局部组件!</h3>'
+    }
+    const app3 = Vue.createApp({
+        components: {
+            'show_a': show_A
+        }
+    })
+    app3.mount('#app3')
+
+    //prop,prop 是子组件用来接受父组件传递过来的数据的一个自定义属性。
+    const app4 = Vue.createApp({})
+    app4.component('site-name', {
+        props: ['title'],
+        template: `<h2>{{ title }}</h2>`
+    })
+    app4.mount('#app4')
+
+    //prop2 是子组件用来接受父组件传递过来的数据的一个自定义属性。
+    const Site5 = {
+        data() {
+            return {
+                sitesList: [
+                    {id: 1, title: 'Google', url: 'https://www.google.com'},
+                    {id: 2, title: 'Baidu', url: 'https://www.baidu.com'},
+                    {id: 3, title: 'Taobao', url: 'https://www.taobao.com'}
+                ]
+            }
+        }
+    }
+    const app5 = Vue.createApp(Site5)
+    app5.component('site-info', {
+        props: ['id', 'title', 'url'],
+        template: `<b>{{ id }} - {{ title }} - {{ url }}</b><br>`
+    })
+    app5.mount('#app5')
+
+    //prop验证
+    const Site6 = {
+        data() {
+            return {
+                sitesList: [
+                    {id: 1, title: 'Google', url: 'https://www.google.com', ids: {message: 'hello'}},
+                    {id: 2, title: 'Baidu', url: 'https://www.baidu.com', ids: {message: 'hello'}},
+                    {id: 3, title: 'Taobao', url: 'https://www.taobao.com', ids: {message: 'hello'}}
+                ]
+            }
+        }
+    }
+    const app6 = Vue.createApp(Site6)
+    app6.component('site-list-check', {
+        props: {
+            id: {
+                type: Number,
+                required: true,
+                default: 0
+            },
+            title: {
+                type: String,
+                required: true
+            },
+            url: {
+                type: String,
+                required: true
+            },
+            // 带有默认值的对象
+            ids: {
+                type: Object,
+                // 对象或数组默认值必须从一个工厂函数获取
+                default: function () {
+                    return {message: 'hello'}
+                }
+            },
+            // 自定义验证函数
+            propF: {
+                validator: function (value) {
+                    // 这个值必须匹配下列字符串中的一个
+                    return ['success', 'warning', 'danger'].indexOf(value) !== -1
+                }
+            }
+        },
+        template: `<b>{{ id }} - {{ title }} - {{ url }}</b><br>`
+    })
+    app6.mount('#app6')
+
+
+</script>
+</body>
+</html>

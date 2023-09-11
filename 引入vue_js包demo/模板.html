@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        .class1 {
+            background: #444;
+            color: #eee;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="hello-vue" class="demo">
+    <!--数据绑定最常见的形式就是使用 {{...}}（双大括号）的文本插值-->
+    <p>变量显示：{{ message }}</p>
+    <p>变量计算：{{ 1 + 1 }} <!--2 --></p>
+    <p>获取变量：{{ userName }}</p>
+    <p v-once>这个将不会改变: {{ userName }}</p>
+
+    <hr>
+    <!--v-html 指令，文本输出-->
+    <p>文本输出：{{ rawHtml }}</p>
+    <!--html代码输出-->
+    <p v-html="rawHtml">代码输出:{{ rawHtml }}</p>
+
+    <hr>
+    <div id="app">
+        修改样式:
+        <label for="r1">修改颜色</label><input type="checkbox" v-model="classColor" id="r1">
+        <br><br>
+        <div v-bind:class="{'class1': classColor}">
+            v-bind:class 指令
+        </div>
+    </div>
+
+    <hr>
+    <p>
+        <button :disabled="isActive">按钮是否可用控制</button>
+    </p>
+    <p>文本切割：{{ messageString }}:{{ messageString.split('').join('-') }}</p>
+    <p v-if="showOrHide">控制显示或隐藏:现在你看到我了</p>
+
+    <hr>
+    <ol>
+        循环数据和条件使用：
+        <li v-for="user in userList">
+            <span v-if="user.name != 'admin'">
+            {{ user.name }}:{{ user.age }}
+            </span>
+        </li>
+    </ol>
+    <hr>
+
+    <p>绑定属性：<a v-bind:href="siteUrl">google</a></p>
+
+    <p>
+        这里显示输入的内容：{{ inputMessage }}<br>
+        <input v-model="inputMessage">
+        <br>
+        <button v-on:click="reverseMessage">反转输入的字符串</button>
+    </p>
+    <a @click="doSomething">点击事件</a>
+
+</div>
+
+<script>
+    const HelloVueApp = {
+        data() {
+            return {
+                message: 'Hello Vue...',
+                userName: "admin",
+                rawHtml: '<span style="color: red">这里会显示红色！</span>',
+                classColor: true,
+                isActive: false,//true
+                messageString: 'liguibing',
+                showOrHide: true,
+                userList: [
+                    {name: '张三', age: 18},
+                    {name: 'admin', age: 19},
+                    {name: '王五', age: 20},
+                ],
+
+                siteUrl: 'https://www.google.com',
+                inputMessage: 'ABC'
+            }
+        },
+        methods: {
+            reverseMessage() {
+                alert("获取内容：" + this.inputMessage)
+                this.inputMessage = this.inputMessage.split('').reverse().join('')
+            },
+            doSomething() {
+                alert("点击了")
+            }
+        }
+    }
+    Vue.createApp(HelloVueApp).mount('#hello-vue')
+
+</script>
+</body>
+
+</html>

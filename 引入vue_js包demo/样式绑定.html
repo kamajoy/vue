@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例 </title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        .static {
+            width: 100px;
+            height: 100px;
+        }
+
+        .active {
+            background: green;
+        }
+
+        .text-danger {
+            background: red;
+        }
+    </style>
+</head>
+<body>
+
+<h3>控制是否显示：</h3>
+<div id="app1">
+    <div :class="{ 'active': isActive }"></div>
+</div>
+<hr>
+
+<h3>text-danger 类背景颜色覆盖了 active 类的背景色：</h3>
+<div id="app2">
+    <div class="static" :class="{ 'active': isActive, 'text-danger': hasError }">
+    </div>
+</div>
+<hr>
+
+<h3>绑定对象方式控制：</h3>
+<div id="app3">
+    <div class="static" :class="classObject"></div>
+</div>
+<hr>
+
+<h3>组件上使用 class 属性 :</h3>
+<div id="app4">
+    <component_lab class="classC classD"></component_lab>
+</div>
+
+<script>
+    const app1 = {
+        data() {
+            return {
+                isActive: true //false:不显示
+            }
+        }
+    }
+    Vue.createApp(app1).mount('#app1')
+
+    // text-danger 类背景颜色覆盖了 active 类的背景色
+    const app2 = {
+        data() {
+            return {
+                isActive: false,
+                hasError: true
+            }
+        }
+    }
+    Vue.createApp(app2).mount('#app2')
+
+    // 绑定对象方式控制
+    const app3 = {
+        data() {
+            return {
+                classObject: {
+                    'active': false,
+                    'text-danger': true
+                }
+            }
+        }
+    }
+    Vue.createApp(app3).mount('#app3')
+
+    // 组件上使用 class 属性
+    const app4 = Vue.createApp({})
+    // 定义一个名为 runoops的新全局组件
+    app4.component('component_lab', {
+        template: '<h1 class="classA classB">I like Google!</h1>'
+    })
+    app4.mount('#app4')
+
+</script>
+</body>
+</html>

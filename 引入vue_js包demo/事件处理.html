@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例 </title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+
+<h3>点击：</h3>
+<div id="app">
+    <button @click="counter += 1">增加 1</button>
+    <p>这个按钮被点击了 {{ counter }} 次。</p>
+</div>
+<hr>
+
+<h3>是在下面定义的方法名:</h3>
+<div id="app2">
+    <!-- `greet` 是在下面定义的方法名 -->
+    <button @click="greet">点我</button>
+    <p>nane值：{{ name }}</p>
+</div>
+<hr>
+
+<h3>内联 JavaScript 语句：</h3>
+<div id="app3">
+    <button @click="say('hi')">Say hi</button>
+    <button @click="say('what')">Say what</button>
+    <p>message值:{{ message }}</p>
+</div>
+<hr>
+
+<h3>事件处理程序中可以有多个方法，这些方法由逗号运算符分隔：</h3>
+<div id="app4">
+    <!-- 这两个 one() 和 two() 将执行按钮点击事件 -->
+    <button @click="one($event), two($event)">
+        点我
+    </button>
+</div>
+
+<script>
+    Vue.createApp({
+        data() {
+            return {
+                counter: 0
+            }
+        }
+    }).mount('#app')
+
+    // 也可以在 JavaScript 中定义方法
+    const app2 = {
+        data() {
+            return {
+                name: 'Google'
+            }
+        },
+        methods: {
+            greet(event) {
+                // `methods` 内部的 `this` 指向当前活动实例
+                alert('Hello ' + this.name + '!')
+                // `event` 是原生 DOM event
+                if (event) {
+                    alert(event.target.tagName)
+                }
+                this.name = "New Google"
+            }
+        }
+    }
+    Vue.createApp(app2).mount('#app2')
+
+    // 内联 JavaScript 语句
+    const app3 = {
+        data() {
+            return {
+                message: 'Vue.js'
+            }
+        },
+        methods: {
+            say(message) {
+                alert(message)
+                this.message = message
+            },
+        }
+    }
+    Vue.createApp(app3).mount('#app3')
+
+    // 事件处理程序中可以有多个方法，这些方法由逗号运算符分隔
+    const app4 = {
+        data() {
+        },
+        methods: {
+            one(event) {
+                alert("第一个事件处理器逻辑...")
+            },
+            two(event) {
+                alert("第二个事件处理器逻辑...")
+            }
+        }
+    }
+    Vue.createApp(app4).mount('#app4')
+
+</script>
+</body>
+</html>

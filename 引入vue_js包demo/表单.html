@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例 </title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+
+
+<h3>输入框:</h3>
+<div id="app1">
+    <p>input 元素：</p>
+    <input v-model="message" placeholder="编辑我……">
+    <p>input 表单消息是: {{ message }}</p>
+
+    <p>textarea 元素：</p>
+    <textarea v-model="message2" placeholder="多行文本输入……"></textarea>
+    <p>textarea 表单消息是:</p>
+    <p style="white-space: pre">{{ message2 }}</p>
+</div>
+<hr>
+
+<h3>复选框&单选框：</h3>
+<div id="app2">
+    <p>单个复选框：</p>
+    <input type="checkbox" id="checkbox" v-model="checked">
+    <label for="checkbox">{{ checked }}</label>
+
+    <p>多个复选框：</p>
+    <input type="checkbox" id="baidu" value="Baidu" v-model="checkedNames">
+    <label for="baidu">Baidu</label>
+
+    <input type="checkbox" id="google" value="Google" v-model="checkedNames">
+    <label for="google">Google</label>
+
+    <input type="checkbox" id="taobao" value="Taobao" v-model="checkedNames">
+    <label for="taobao">taobao</label>
+    <br>
+    <span>选择的值为: {{ checkedNames }}</span>
+    <br><br>
+
+    <input type="radio" id="runoops2" value="Runoops2" v-model="picked">
+    <label for="runoops2">Runoops</label>
+    <br>
+    <input type="radio" id="google2" value="Google2" v-model="picked">
+    <label for="google2">Google</label>
+    <br>
+    <span>选中值为: {{ picked }}</span>
+
+    <br><br>
+    <select v-model="selected" name="site">
+        <option value="">选择一个网站</option>
+        <option value="www.baidu.com">Runoops</option>
+        <option value="www.google.com">Google</option>
+    </select>
+    <div id="output">
+        选择的网站是: {{selected}}
+    </div>
+
+</div>
+<hr>
+
+<h3>使用 v-for 循环输出选项：</h3>
+<div id="app3" class="demo">
+    <select v-model="selected">
+        <option v-for="option in options" :value="option.value">
+            {{ option.text }}
+        </option>
+    </select>
+    <span>选择的是: {{ selected }}</span>
+</div>
+<hr>
+
+
+<script>
+    // 输入框
+    const app1 = {
+        data() {
+            return {
+                message: '',
+                message2: '谷歌\r\nhttps://www.google.com'
+            }
+        }
+    }
+    Vue.createApp(app1).mount('#app1')
+
+    // 复选框
+    const app2 = {
+        data() {
+            return {
+                checked: false,
+                checkedNames: [],
+                picked: 'Google2',
+                selected: 'www.google.com'
+            }
+        }
+    }
+    Vue.createApp(app2).mount('#app2')
+
+    // 使用 v-for 循环输出选项
+    const app3 = {
+        data() {
+            return {
+                selected: 'www.runoops.com',
+                options: [
+                    {text: 'Runoops', value: 'www.runoops.com'},
+                    {text: 'Google', value: 'www.google.com'},
+                    {text: 'Taobao', value: 'www.taobao.com'}
+                ]
+            }
+        }
+    }
+    Vue.createApp(app3).mount('#app3')
+
+</script>
+</body>
+</html>

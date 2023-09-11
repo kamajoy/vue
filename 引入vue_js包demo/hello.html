@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例</title>
+    <!--<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>-->
+    <!--国内CDN-->
+    <script src="https://cdn.staticfile.org/vue/3.2.33/vue.global.js"></script>
+
+    <!-- 引入样式 -->
+    <!--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">-->
+    <!-- 引入组件库 -->
+    <!--<script src="https://unpkg.com/element-ui/lib/index.js"></script>-->
+</head>
+<body>
+
+<span>参考：https://runoops.com/vue3-v-for.html</span>
+
+<div id="hello-vue" class="demo">
+    消息：{{ message }}
+    <hr>
+    名字：{{ userName }}
+</div>
+
+<script>
+    const app = {
+        //data 选项 是一个函数，组件中的每个实例可以维护一份被返回对象的独立的拷贝
+        data() {
+            return {
+                message: '消息...',
+                userName: '张三...',
+                count: 5
+            }
+        },
+
+        //方法，组件中的方法可以直接通过 "this" 访问到组件的属性
+        methods: {
+            increment() {
+                // `this` 指向该组件实例
+                this.count++
+            }
+        }
+
+
+    }
+
+    const vm = Vue.createApp(app).mount('#hello-vue')
+    console.log("获取userName的值：" + vm.userName)
+    console.log("获取message的值：" + vm.$data.message)
+
+    vm.$data.Username = 'admin'
+    console.log("userName修改后的值：" + vm.Username)
+
+    console.log("count值：" + vm.count)
+
+</script>
+</body>
+</html>

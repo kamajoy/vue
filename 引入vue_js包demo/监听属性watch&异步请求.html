@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+</head>
+<body>
+
+
+<div id="app">
+    <p style="font-size:25px;">计数器: {{ counter }}</p>
+    <button @click="counter++" style="font-size:25px;">点我</button>
+</div>
+<hr>
+
+<div id="app2">
+    千米 : <input type="text" v-model="kilometers">
+    米 : <input type="text" v-model="meters">
+</div>
+<p id="data_info"></p>
+<hr>
+
+<h3>异步加载数据&监听:</h3>
+<div id="watch-example">
+    <p>
+        输入一个问题，以 ? 号结尾输出答案:
+        <input v-model="question"/>
+    </p>
+    <p>{{ answer }}</p>
+</div>
+
+<script>
+    const app = {
+        data() {
+            return {
+                counter: 1
+            }
+        }
+    }
+    vm = Vue.createApp(app).mount('#app')
+    // 监听属性事件
+    vm.$watch('counter', function (nval, oval) {
+        //alert('计数器值的变化 :' + oval + ' 变为 ' + nval + '!');
+    });
+
+    //动态计算属性
+    const app2 = {
+        data() {
+            return {
+                kilometers: 0,
+                meters: 0
+            }
+        },
+        watch: {
+            kilometers: function (val) {
+                this.kilometers = val;
+                this.meters = this.kilometers * 1000
+            },
+            meters: function (val) {
+                this.kilometers = val / 1000;
+                this.meters = val;
+            }
+        }
+    }
+    vm2 = Vue.createApp(app2).mount('#app2')
+    vm2.$watch('kilometers', function (newValue, oldValue) {
+        // 这个回调将在 vm.kilometers 改变后调用
+        document.getElementById("data_info").innerHTML = "修改前值为: " + oldValue + "，修改后值为: " + newValue;
+    })
+
+    //异步加载数据&监听
+    const watchExampleVM = Vue.createApp({
+        data() {
+            return {
+                question: '',
+                answer: '每个问题结尾需要输入 ? 号。'
+            }
+        },
+        watch: {
+            // 每当问题改变时，此功能将运行，以 ? 号结尾
+            question(newQuestion, oldQuestion) {
+                if (newQuestion.indexOf('?') > -1) {
+                    this.getAnswer()
+                }
+            }
+        },
+        methods: {
+            getAnswer() {
+                this.answer = '加载中...'
+                //axios库
+                axios
+                    .get('https://yesno.wtf/api')
+                    .then(response => {
+                        this.answer = response.data.answer
+                    })
+                    .catch(error => {
+                        this.answer = '错误! 无法访问 API。 ' + error
+                    })
+            }
+        }
+    }).mount('#watch-example')
+
+</script>
+</body>
+</html>

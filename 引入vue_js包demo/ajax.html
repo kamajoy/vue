@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例 </title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<h3>GET 方法:</h3>
+<div id="app">
+    {{ info }}
+</div>
+<hr>
+
+<h3>POST 方法:</h3>
+<div id="app2">
+    {{ info }}
+</div>
+<hr>
+
+<script>
+    //GET 方法
+    const app = {
+        data() {
+            return {
+                info: 'Ajax GET 测试!!'
+            }
+        },
+        mounted() {
+            // 直接在 URL 上添加参数 ID=12345
+            axios.get('https://api.soyoung.com/v8/shop?uid=896003223232')
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+            // 也可以通过 params 设置参数：
+            axios.get('https://api.soyoung.com/v8/shop', {
+                params: {
+                    UID: 12345
+                }
+            }).then(function (response) {
+                console.log(response);
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }
+    Vue.createApp(app).mount('#app')
+
+    //POST 方法
+    const app2 = {
+        data() {
+            return {
+                info: "ajax post 测试!!"
+            }
+        },
+        mounted() {
+            // 通过 POST 方法传递参数
+            axios
+                .post('https://api.soyoung.com/v8/shop', {
+                    uid: 22323,
+                    firstName: 'Fred',        // 参数 firstName
+                    lastName: 'Flintstone'    // 参数 lastName
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+            //多个并发请求1
+            axios.all([
+                axios.get('https://api.soyoung.com/v8/shop?uid=896003223232'),
+                axios.post('https://api.soyoung.com/v8/shop', {
+                    uid: 22323,
+                    firstName: 'Fred',        // 参数 firstName
+                    lastName: 'Flintstone'    // 参数 lastName
+                })
+            ]).then(axios.spread((res1, res2) => {
+                // 两个请求现在都执行完成
+                console.log(res1.data);
+                console.log(res2.data);
+            }));
+
+            //多个并发请求2
+            function getUserAccount() {
+                return axios.get('/user/12345');
+            }
+
+            function getUserPermissions() {
+                return axios.get('/user/12345/permissions');
+            }
+
+            axios.all([getUserAccount(), getUserPermissions()])
+                .then(axios.spread(function (acct, perms) {
+                    // 两个请求现在都执行完成
+                }));
+        }
+    }
+    Vue.createApp(app2).mount('#app2')
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例 </title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+<div id="view_test">
+    <!--这里， v-if 指令将根据表达式 seen 的值( true 或 false )来决定是否插入 p 元素-->
+    <template v-if="seen">
+        <h1>网站</h1>
+        <p>Google</p>
+        <p>facebook</p>
+    </template>
+</div>
+
+<hr>
+<div id="app2">
+    <!-- 可以用 v-else 指令给 v-if 添加一个 "else" 块 -->
+    <div v-if="Title === 'A'">
+        A
+    </div>
+    <div v-else-if="Title === 'B'">
+        B
+    </div>
+    <div v-else-if="Title === 'C'">
+        C
+    </div>
+    <div v-else>
+        Not A/B/C.
+    </div>
+    <h1 v-show="ok">Hello!</h1>
+</div>
+
+
+<script>
+    const app = {
+        data() {
+            return {
+                seen: true /* 改为false，信息就无法显示 */
+            }
+        }
+    }
+    Vue.createApp(app).mount('#view_test')
+
+    const app2 = {
+        data() {
+            return {
+                Title: "B",
+                ok: true
+            }
+        }
+    }
+
+    Vue.createApp(app2).mount('#app2')
+
+</script>
+</body>
+</html>
