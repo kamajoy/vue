@@ -11,7 +11,17 @@ https://juejin.cn/post/7147353734912147470#heading-17
 npm install -g pnpm
 
 创建项目：
-npm create vue@latest vue3-demo
+npm create vue@latest
+
+✔ Project name（项目名）: toolsdog
+✔ Add TypeScript（添加TS,如果需要用typescript则选择Yes）? : No
+✔ Add JSX Support（添加JSX支持）? : No
+✔ Add Vue Router for Single Page Application development（添加Vue-router）? : Yes
+✔ Add Pinia for state management（添加状态管理Pinia）? : Yes
+✔ Add Vitest for Unit testing（为单元测试添加Vitest）? : No
+✔ Add Cypress for both Unit and End-to-End testing（为单元测试与端到端测试添加Cypress）? : No
+✔ Add ESLint for code quality（为代码质量添加ESLint）? : Yes
+✔ Add Prettier for code formatting（为代码格式添加Prettier）? : Yes
 
 安装依赖：
 -- https://cn.vuejs.org/guide/quick-start.html#creating-a-vue-application
